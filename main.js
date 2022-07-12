@@ -121,15 +121,23 @@ function plantilla(data) {
                             <button class="btnEliminar" data-id="${elem.id}"><img src="css/trash.svg"></button>
                           </td>`;
         tbody.appendChild(fila);
-        document.querySelector(".btnEditar").addEventListener("click", btnEditar);
-        document.querySelector(".btnEliminar").addEventListener("click", btnEliminar);
     });
+    document.querySelectorAll(".btnEditar").forEach((elem)=>{elem.addEventListener("click", btnEditar)});
+    document.querySelectorAll(".btnEliminar").forEach((elem)=>{elem.addEventListener("click", btnEliminar)});
 }
 
 function btnEditar(e){
     editar();
-    let id = e.target.dataset.id;
-    get(id);
+    let elemento;
+    if(e.target.dataset == null)
+        elemento = e.target.parentElement;
+    else
+        elemento = e.target;
+    console.log(elemento.dataset.id);
+    console.log(e);
+    console.log(e.target)
+    console.log(e.target.parentElement);
+    get(elemento.dataset.id);
 }
 
 function edicion(e){
@@ -164,7 +172,7 @@ function edicion(e){
     })
 }
 
-function btnEliminar(){
+function btnEliminar(e){
     let id = e.target.dataset.id;
     Swal.fire({
         title: 'Estas seguro?',
@@ -193,7 +201,7 @@ function btnEliminar(){
 
 async function get(id) {
     try{
-        let respuesta = await fetch(`${url}/${id}`);
+        let respuesta = await fetch(`${url}/${id}`,{"method" : "GET"});
         if(respuesta.ok){
             let json = await respuesta.json();
             formEditar.inputNombre.value = json.nombre;
