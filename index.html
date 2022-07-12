@@ -12,23 +12,31 @@
 </head>
 <body>
     <main class="content">
-        <h1>Asado Tudai - Lista</h1>
+        <table>
+            <caption>Asado Tudai - Lista</caption>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Celiac@</th>
+                    <th>Vegetarian@</th>
+                    <th>Pago</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="la-banda"></tbody>
+        </table>
         <div>
-            <div id="gridForm" class="container">
-
-            </div>
-            
+            <div id="gridForm" class="container"></div>
             <div class="btnIr">
                 <button id="btnIr">Quiero ir!</button>
             </div>
             <div class="btnContenedor">
-                <button class="btnResta">Anterior</button>
-                <button class="btnSumar">Siguiente</button>
+                <button id="btnAnt">&laquo;</button>
+                <div id="paginado"><p>0-5</p></div>
+                <button id="btnSig">&raquo;</button>
             </div>
-            <div id="formularioContainer">
-                
-                
-            </div>
+            <div id="formularioContainer"></div>
         </div>
         <div class="creador">
             <a class="a__creador" target="blank" href="https://www.linkedin.com/in/martiniano-weber/"> <img  class="creado__linkedin" src="./linkedin.webp" alt="Icono de Linkedin"> Mi perfil de Linkedin</a>

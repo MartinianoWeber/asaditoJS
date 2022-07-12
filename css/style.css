@@ -1,23 +1,25 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "nunito sans";
-    
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: "nunito sans";
+}
 
 .content{
-    width: 100vw;
-    height: auto;
-    background: #009FFF;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ec2F4B, #009FFF);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #ec2F4B, #009FFF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
     background-size: 400% 400%;
     position: relative;
     animation: cambiar 10s ease-in-out infinite;
-    overflow: hidden;
-    padding-bottom: 3rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100vh;
 }
+
 @keyframes cambiar{
     0%{background-position: 0, 100%;}
     50%{background-position: 100%, 50%;}
@@ -25,14 +27,13 @@ body {
 }
 
 
-.content h1 {
+.content caption {
+    margin: 20px 0px;
     text-align: center;
     font-size: 3rem;
     color: #ffffff;
     filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
-
 }
-
 
 .container{
     display: grid;
@@ -46,11 +47,6 @@ body {
 .container h2{
 filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
 }
-.container p{
-    font-size: 1.5rem;
-    filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
-
-    }
 .btnIr{
     display: flex;
     justify-content: center;
@@ -63,15 +59,16 @@ filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
     border:none;
     outline: none;
     cursor: pointer;
-    transition: 2s;
     border-radius: .7rem;
     color: #ffffff;
+    text-transform: uppercase;
 }
 
-.btnIr button:hover{
-    background-color: #8c00ff;
-    transition: 2s;
-    color: yellow;
+button:hover{
+    background-color: black;
+    color: #8c00ff;
+    font-weight: bold;
+    transition: 0.5s;
 }
 
 .form {
@@ -136,7 +133,6 @@ filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
     
 }
 
-
 .bg{
     width: 100vw;
     height: 100vh;
@@ -173,50 +169,44 @@ filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
     color: #ffffff;
 }
 
-.btnEditar{
+td button{
     background-color: #ae00ff;
-    font-size: 1rem;
-    width: 80px;
-    height: 40px;
+    padding: 10px;
     margin: auto;
     border:none;
     outline: none;
     cursor: pointer;
-    transition: 2s;
-    border-radius: .7rem;
-    color: #ffffff;
-}
-
-.btnEliminar{
-    background-color: #ae00ff;
-    font-size: 1rem;
-    width: 80px;
-    height: 40px;
-    margin: auto;
-    border:none;
-    outline: none;
-    cursor: pointer;
-    transition: 2s;
+    transition: 0.5s;
     border-radius: .7rem;
     color: #ffffff;
 }
 
 .btnContenedor{
     display: flex;
-    justify-content: space-around;
-    width: 200px;
-    margin: auto;
-    margin-top: .2rem;
+    width: 100%;
+    justify-content: center;
+    margin: 20px;
     align-items: center;
 }
 
 .btnContenedor button{
-    height:30px;
+    height:auto;
+    width: 40px;
+    font-size: 30px;
     background-color: #000000;
     color: #ffffff;
+    font-weight: bold;
+    text-transform:uppercase;
     border:none;
-    outline: none;
     cursor: pointer;
+    box-shadow: 3px 2px 0 0 #fe2d52;
+    filter: drop-shadow(-2px -2px 0 #28ffff);
+}
+
+.btnContenedor button:hover{
+    color: black;
+    background-color: white;
+    transition: 0.5s;
 }
 
 .creador{
@@ -239,14 +229,102 @@ filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
     margin-right: 2rem;
 }
 
-
 .creado__cohete, .creado__linkedin {
     width: 40px;
     height: 40px;
+}
+
+/* Tuneada */
+table{
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    height: auto;
+    margin-bottom: 50px;
+    padding: 0px 50px;
+    border: 1px solid white;
+}
+
+table thead{
+    text-transform: uppercase;
+    background-color: rgba(0, 0, 0, 0.418);
+    color: wheat;
+}
+
+table tr{
+    border: 1px solid #ddd;
+}
+
+table td, table th{
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
+}
+
+#paginado{
+    font-family: monospace;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px;
+    background-color: white;
+    border: 1px;
+    width: 60px;
+    height: 30px;
+    box-shadow: 3px 2px 0 0 #fe2d52;
+    filter: drop-shadow(-2px -2px 0 #28ffff);
+}
+
+@media only screen and (max-width: 600px) {
+    .content{
+        height: 100%;
     }
+    table{
+        border: 0px;
+        max-width: 350px;
+    }
+    table caption {
+        font-size: 22px;
+    }
+    table thead{
+        display: none;
+    }
+    table tr{
+        margin-bottom: 8px;
+        border-bottom: 4px solid #ddd;
+        display: block;
+        border-radius: 10px;
+    }
+    table th, table td{
+        font-size: 12px;
+    }
+    table td{
+        display: block;
+        border-bottom: 1px solid #ddd;
+        text-align: right;
+        padding: 0px 20px;
+    }
+    table td:last-child{
+        border-bottom: 0px;
+    }
+    table td::before{
+         content: attr(data-label);
+         font-weight: bold;
+         text-transform: uppercase;
+         float: left;
+    }
+    td button{
+        padding: 5px;
+    }
+        
+}
 
+/* Fin Tuneada */
 
-@media (min-width: 280px ) and (max-width: 570px ){
+@media (min-width: 280px ) and (max-width: 600px ){
     .creador{
         margin-top:1rem;
         display: flex;
@@ -268,41 +346,21 @@ filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
     .container h2 {
         font-size: 1em;
     }
-    .btnEditar{
-       
-        width: 60px;
-        font-size: 0.8rem;
-        
-    }
-    
-    .btnEliminar{
-        
-        width: 60px;
-        font-size: 0.8rem;
+    table td, table th{
+        font-size: 1rem;
     }
 }
 
 
 @media (min-width: 280px ) and (max-width: 674px ){
     .container{
-        width: auto;
-        overflow: hidden;
-        overflow-x: scroll;   
+        width: auto;  
     }
     .container h2 {
         font-size: 1em;
     }
-    .btnEditar{
-       
-        width: 60px;
-        font-size: 0.8rem;
-        
-    }
-    
-    .btnEliminar{
-        
-        width: 60px;
-        font-size: 0.8rem;
+    table td, table th{
+        font-size: 1rem;
     }
 }
 
