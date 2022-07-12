@@ -30,7 +30,7 @@ async function cantidadProductos() {
         }
 
     }
-    catch (error) { console.log(error); }
+    catch(error){console.log(error);}
 }
 
 function participar() { formularioContainer.appendChild(generarFormulario("participar")); }
@@ -133,10 +133,6 @@ function btnEditar(e){
         elemento = e.target.parentElement;
     else
         elemento = e.target;
-    console.log(elemento.dataset.id);
-    console.log(e);
-    console.log(e.target)
-    console.log(e.target.parentElement);
     get(elemento.dataset.id);
 }
 
@@ -211,7 +207,7 @@ async function get(id) {
             formEditar.inputPago.value = json.pago;
         }
     }
-    catch(error){console.log(error);};
+    catch(error){console.log(error);}
 }
 
 async function imprimir() {
