@@ -1,0 +1,323 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "nunito sans";
+    
+}
+
+
+.content{
+    width: 100vw;
+    height: auto;
+    background: #009FFF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ec2F4B, #009FFF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ec2F4B, #009FFF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    background-size: 400% 400%;
+    position: relative;
+    animation: cambiar 10s ease-in-out infinite;
+    overflow: hidden;
+    padding-bottom: 3rem;
+}
+@keyframes cambiar{
+    0%{background-position: 0, 100%;}
+    50%{background-position: 100%, 50%;}
+    100%{background-position: 0, 50%;}
+}
+
+
+.content h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #ffffff;
+    filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
+
+}
+
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 80%;
+    margin: 0 auto;
+    margin-top: -2rem;
+    text-align: center;
+    color: #ffffff;
+}
+.container h2{
+filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
+}
+.container p{
+    font-size: 1.5rem;
+    filter: drop-shadow(0px 2px 1px rgb(0, 0, 0));
+
+    }
+.btnIr{
+    display: flex;
+    justify-content: center;
+}
+
+.btnIr button{
+    background-color: #ae00ff;
+    font-size: 1.4rem;
+    width: 300px;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    transition: 2s;
+    border-radius: .7rem;
+    color: #ffffff;
+}
+
+.btnIr button:hover{
+    background-color: #8c00ff;
+    transition: 2s;
+    color: yellow;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.form input{
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size:1.5rem;
+    border-radius: .6rem;
+    outline: none;
+    border: none;
+
+}
+
+.form button{
+    background-color: #ae00ff;
+    font-size: 1.4rem;
+    width: 100%;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    margin:auto;
+    transition: 2s;
+    border-radius: .7rem;
+    color: #ffffff;
+    
+}
+
+.formEditar {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.formEditar input{
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size:1.5rem;
+    border-radius: .6rem;
+    outline: none;
+    border: none;
+
+}
+
+.formEditar button{
+    background-color: #ae00ff;
+    font-size: 1.4rem;
+    width: 100%;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    margin:auto;
+    transition: 2s;
+    border-radius: .7rem;
+    color: #ffffff;
+    
+}
+
+
+.bg{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.418);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.bg__popUp{
+    background-color: black;
+    width: 40%;
+    padding:2rem;
+    margin: 0 auto;
+    margin-top: 5rem;
+}
+
+.btn__popUp {
+    margin: auto;
+    width: 400px;
+}
+
+.btn__popUp button{
+    background-color: #ff000d;
+    font-size: 1.4rem;
+    width: 100%;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    margin:auto;
+    transition: 2s;
+    margin-top: .5rem;
+    border-radius: .7rem;
+    color: #ffffff;
+}
+
+.btnEditar{
+    background-color: #ae00ff;
+    font-size: 1rem;
+    width: 80px;
+    height: 40px;
+    margin: auto;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    transition: 2s;
+    border-radius: .7rem;
+    color: #ffffff;
+}
+
+.btnEliminar{
+    background-color: #ae00ff;
+    font-size: 1rem;
+    width: 80px;
+    height: 40px;
+    margin: auto;
+    border:none;
+    outline: none;
+    cursor: pointer;
+    transition: 2s;
+    border-radius: .7rem;
+    color: #ffffff;
+}
+
+.btnContenedor{
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+    margin: auto;
+    margin-top: .2rem;
+    align-items: center;
+}
+
+.btnContenedor button{
+    height:30px;
+    background-color: #000000;
+    color: #ffffff;
+    border:none;
+    outline: none;
+    cursor: pointer;
+}
+
+.creador{
+    margin-top:1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.a__creador{
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #ffffff;
+    text-decoration: none;
+    
+}
+
+.a__creador:nth-child(1){
+    margin-right: 2rem;
+}
+
+
+.creado__cohete, .creado__linkedin {
+    width: 40px;
+    height: 40px;
+    }
+
+
+@media (min-width: 280px ) and (max-width: 570px ){
+    .creador{
+        margin-top:1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .a__creador{
+        font-size: 1rem;
+        
+    }
+}
+
+@media (min-width: 800px ) and (max-width: 1090px ){
+    .container h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 675px ) and (max-width: 799px ){
+    .container h2 {
+        font-size: 1em;
+    }
+    .btnEditar{
+       
+        width: 60px;
+        font-size: 0.8rem;
+        
+    }
+    
+    .btnEliminar{
+        
+        width: 60px;
+        font-size: 0.8rem;
+    }
+}
+
+
+@media (min-width: 280px ) and (max-width: 674px ){
+    .container{
+        width: auto;
+        overflow: hidden;
+        overflow-x: scroll;   
+    }
+    .container h2 {
+        font-size: 1em;
+    }
+    .btnEditar{
+       
+        width: 60px;
+        font-size: 0.8rem;
+        
+    }
+    
+    .btnEliminar{
+        
+        width: 60px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 280px ) and (max-width: 1025px ){
+    .form{
+        width: auto;
+    }
+    .btn__popUp{
+        width: auto;
+    }
+    .btn__popUp button{
+        width: 100%;
+    }
+
+    .formEditar{
+        width: auto;
+    }
+}
