@@ -17,7 +17,7 @@ const obj = {
 }
 
 btnIr.addEventListener('click', () => {
-    participar()
+    formularioContainer.appendChild(generarFormulario());
 })
 
 // buscar la cantidad total de elementos en el objeto 
@@ -30,49 +30,44 @@ async function cantidadProductos() {
         }
 
     }
-    catch (error) { console.log(error); }
+    catch(error){console.log(error);}
 }
 
-function participar() { formularioContainer.appendChild(generarFormulario("participar")); }
-function editar() { formularioContainer.appendChild(generarFormulario("editar")); }
-
-function generarFormulario(valor) {
+function generarFormulario() {
     let form = document.createElement("form");
     let btn = document.createElement("button");
     btn.setAttribute("type", "submit");
-    if (valor == "participar") {
-        form.setAttribute("id", "formEditar");
-        form.classList.add("formEditar");
-        form.addEventListener("submit",(e)=>{
-            e.preventDefault();
-            enviarDato({
-                nombre: inputNombre.value,
-                apellido: inputApellido.value,
-                vegetariano: inputVegetariano.value,
-                celiaco: inputCeliaco.value,
-                pago: inputPago.value
-            });
-            formularioContainer.innerHTML = '';
-            Swal.fire({
-                icon: 'success',
-                title: 'Inscripcion enviada con exito!',
-                text: 'Verifica que este en la lista de invitados.',
-            });
-        })
-        btn.classList.add("btnSubmit");
-        btn.innerHTML = "Participar";
-    }
-    if (valor == "editar") {
-        form.classList.add("form");
-        btn.classList.add("btnSubmitEditar");
-        btn.innerHTML = "Editar";
-        btn.addEventListener("click",edicion)
-    }
+    form.setAttribute("id", "formEditar");
+    form.classList.add("formEditar");
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        enviarDato({
+            nombre: inputNombre.value,
+            apellido: inputApellido.value,
+            vegetariano: cambiar(inputVegetariano.checked),
+            celiaco: cambiar(inputCeliaco.checked),
+            pago: "no"
+        });
+        formularioContainer.innerHTML = '';
+        Swal.fire({
+            icon: 'success',
+            title: 'Inscripcion enviada con exito!',
+            text: 'Verifica que este en la lista de invitados.',
+        });
+    })
+    btn.classList.add("btnSubmit");
+    btn.innerHTML = "Participar";
     form.innerHTML = `<input id="inputNombre" placeholder="Nombre" type="text" required>
                       <input id="inputApellido" placeholder="Apellido" type="text" required>
-                      <input id="inputVegetariano" placeholder="Vegetariano" type="text" required>
-                      <input id="inputCeliaco" placeholder="Celiaco" type="text" required>
-                      <input id="inputPago" placeholder="Pago" type="text" required>`;
+                      <div>
+                        <label>¿Vegetarian@?</label>
+                        <input id="inputVegetariano" placeholder="Vegetariano" type="checkbox" >
+                      </div>
+                      <div>
+                        <label>¿Celiac@?</label>
+                        <input id="inputCeliaco" placeholder="Celiaco" type="checkbox" >
+                      </div>
+                        `;
     form.appendChild(btn);
     let popUP = document.createElement("div");
     popUP.classList.add("bg__popUp");
@@ -97,7 +92,7 @@ function plantilla(data) {
     tbody.innerHTML = "";
     let ths = document.querySelectorAll("th");
     data.forEach((elem) => {
-        let valorVeg, valorCel, colorV = "red", colorC = "red";
+        let valorVeg, valorCel, valorPag, colorV = "red", colorC = "red", colorP = "red";
         if(elem.vegetariano == "No" || elem.vegetariano == "no")
             valorVeg = `&cross;`;
         else{
@@ -110,70 +105,98 @@ function plantilla(data) {
             valorCel = `&check;`;
             colorC = "green";
         }
+        if(elem.pago == "No" || elem.pago == "no")
+            valorPag = "&cross;";
+        else{
+            valorPag = "&check;";
+            colorP = "green";
+        }
         let fila = document.createElement("tr");
         fila.innerHTML = `<td data-label=${ths[0].innerHTML} >${elem.nombre}</td>
                           <td data-label=${ths[1].innerHTML} >${elem.apellido}</td>
                           <td data-label=${ths[2].innerHTML} style=color:${colorV} >${valorVeg}</td>
                           <td data-label=${ths[3].innerHTML} style=color:${colorC}>${valorCel}</td>
-                          <td data-label=${ths[4].innerHTML} >${elem.pago}</td>
+                          <td data-label=${ths[4].innerHTML} style=color:${colorP}>${valorPag}</td>
                           <td data-label=${ths[5].innerHTML} >        
-                            <button class="btnEditar" data-id="${elem.id}"><img src="css/pencil.svg"></button>
-                            <button class="btnEliminar" data-id="${elem.id}"><img src="css/trash.svg"></button>
+                            <button class="btnEditar" data-id=${elem.id}><i class="fa fa-pencil-alt"></i></button>
+                            <button class="btnOK oculta" data-id=${elem.id}><i class="fa fa-check"></i></button>   
+                            <button class="btnEliminar" data-id=${elem.id}><i class="fa fa-trash-alt"></i></button>
                           </td>`;
         tbody.appendChild(fila);
     });
     document.querySelectorAll(".btnEditar").forEach((elem)=>{elem.addEventListener("click", btnEditar)});
+    document.querySelectorAll(".btnOK").forEach((elem)=>{elem.addEventListener("click", btnOk)});
     document.querySelectorAll(".btnEliminar").forEach((elem)=>{elem.addEventListener("click", btnEliminar)});
 }
 
 function btnEditar(e){
-    editar();
-    let elemento;
-    if(e.target.dataset == null)
-        elemento = e.target.parentElement;
-    else
-        elemento = e.target;
-    console.log(elemento.dataset.id);
-    console.log(e);
-    console.log(e.target)
-    console.log(e.target.parentElement);
-    get(elemento.dataset.id);
+    //let id = getID(e);
+    let boton = e.target;
+    let fila = boton.parentElement.parentElement;
+    if(e.target.innerHTML == ""){
+        boton = boton.parentElement;
+        fila = fila.parentElement;
+    }
+    for(let celda of fila.children){
+        if(celda.getAttribute("data-label")!="Acciones"){
+            let input = document.createElement("input");
+            if(celda.getAttribute("data-label")!="Nombre"&&celda.getAttribute("data-label")!="Apellido"){
+                input.setAttribute("type", "checkbox");
+                input.checked = true;
+                if(celda.innerHTML == "✗")
+                    input.checked = false;
+            }
+            input.value = celda.innerHTML;
+            celda.innerHTML = "";
+            celda.appendChild(input);
+        }
+    }
+    boton.classList.toggle("oculta");
+    boton.nextElementSibling.classList.toggle("oculta");
 }
 
-function edicion(e){
-    e.preventDefault()
-    Swal.fire({
-        title: 'Estas seguro?',
-        text: "No podras revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, editar!'
-    }).then((result) => {
-        if (result.value) {
-            modificar(id, {
-                nombre: formEditar.inputNombre.value,
-                apellido: formEditar.inputApellido.value,
-                vegetariano: formEditar.inputVegetariano.value,
-                celiaco: formEditar.inputCeliaco.value,
-                pago: formEditar.inputPago.value
-            });
-            Swal.fire(
-                'Editado!',
-                'Tu proyecto ha sido editado.',
-                'success'
-            );
-            formularioContainer.innerHTML = '';
-        }
-        else {
-            formularioContainer.innerHTML = '';
-        }
-    })
+async function btnOk(e){
+    let boton = e.target;
+    let fila = boton.parentElement.parentElement;
+    if(e.target.innerHTML == ""){
+        boton = boton.parentElement;
+        fila = fila.parentElement;
+    }
+    let valores = {
+        nombre : fila.children[0].children[0].value,
+        apellido : fila.children[1].children[0].value,
+        celiaco : cambiar(fila.children[2].children[0].checked),
+        vegetariano : cambiar(fila.children[3].children[0].checked),
+        pago : cambiar(fila.children[0].children[0].checked)
+    }
+    console.log(boton.dataset.id);
+    try{
+        await fetch(`${url}/${boton.dataset.id}`,{"method": "PUT",
+                                    "headers": { "Content-Type": "application/json" },
+                                    "body": JSON.stringify(valores)
+        });
+        boton.classList.toggle("oculta");
+        boton.previousElementSibling.classList.toggle("oculta");
+        imprimir();
+    }
+    catch(error){console.log(error);}
+}
+
+function cambiar(valor){
+    if(valor)
+        return "si"
+    return "no"
+}
+
+function getID(e){
+    if(e.target.dataset.id == null)
+        return e.target.parentElement.dataset.id;
+    else
+        return e.target.dataset.id;
 }
 
 function btnEliminar(e){
-    let id = e.target.dataset.id;
+    let id = getID(e);
     Swal.fire({
         title: 'Estas seguro?',
         text: "No podras revertir esto!",
@@ -199,21 +222,6 @@ function btnEliminar(e){
     });
 }
 
-async function get(id) {
-    try{
-        let respuesta = await fetch(`${url}/${id}`,{"method" : "GET"});
-        if(respuesta.ok){
-            let json = await respuesta.json();
-            formEditar.inputNombre.value = json.nombre;
-            formEditar.inputApellido.value = json.apellido;
-            formEditar.inputVegetariano.value = json.vegetariano;
-            formEditar.inputCeliaco.value = json.celiaco;
-            formEditar.inputPago.value = json.pago;
-        }
-    }
-    catch(error){console.log(error);};
-}
-
 async function imprimir() {
     try{
         let respuesta = await fetch(`${url}?page=${obj.page}&limit=${obj.limit}`);
@@ -224,17 +232,18 @@ async function imprimir() {
     }
     catch(error){console.log(error);}
 }
-
-async function modificar(id, dato) {
-    try{
-        await fetch(`${url}/${id}`,{"method": "PUT",
-                                    "headers": { "Content-Type": "application/json" },
-                                    "body": JSON.stringify(dato)
-        });
-        imprimir();
-    }
-    catch(error){console.log(error);}
-}
+/*
+await fetch("https://62ccd195a080052930b0304f.mockapi.io/gente/gente/1",{"method": "PUT",
+                                                                         "headers": { "Content-Type": "application/json" },
+                                                                         "body": `{
+                                                                            "nombre": "Ines",
+                                                                            "apellido": "Bilbao",
+                                                                            "vegetariano": "no",
+                                                                            "celiaco": "si",
+                                                                            "pago": "-"
+                                                                         }`
+});
+*/
 
 async function enviarDato(obj) {
     try{
