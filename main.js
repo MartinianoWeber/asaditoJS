@@ -30,7 +30,7 @@ async function cantidadProductos() {
         }
 
     }
-    catch(error){console.log(error);}
+    catch (error) { console.log(error); }
 }
 
 function generarFormulario() {
@@ -39,7 +39,7 @@ function generarFormulario() {
     btn.setAttribute("type", "submit");
     form.setAttribute("id", "formEditar");
     form.classList.add("formEditar");
-    form.addEventListener("submit",(e)=>{
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
         enviarDato({
             nombre: inputNombre.value,
@@ -92,31 +92,12 @@ function plantilla(data) {
     tbody.innerHTML = "";
     let ths = document.querySelectorAll("th");
     data.forEach((elem) => {
-        let valorVeg, valorCel, valorPag, colorV = "red", colorC = "red", colorP = "red";
-        if(elem.vegetariano == "No" || elem.vegetariano == "no")
-            valorVeg = `&cross;`;
-        else{
-            valorVeg = `&check;`;
-            colorV = "green";
-        }
-        if(elem.celiaco == "No" || elem.celiaco == "no")
-            valorCel = `&cross;`;
-        else{
-            valorCel = `&check;`;
-            colorC = "green";
-        }
-        if(elem.pago == "No" || elem.pago == "no")
-            valorPag = "&cross;";
-        else{
-            valorPag = "&check;";
-            colorP = "green";
-        }
         let fila = document.createElement("tr");
         fila.innerHTML = `<td data-label=${ths[0].innerHTML} >${elem.nombre}</td>
                           <td data-label=${ths[1].innerHTML} >${elem.apellido}</td>
-                          <td data-label=${ths[2].innerHTML} style=color:${colorV} >${valorVeg}</td>
-                          <td data-label=${ths[3].innerHTML} style=color:${colorC}>${valorCel}</td>
-                          <td data-label=${ths[4].innerHTML} style=color:${colorP}>${valorPag}</td>
+                          <td data-label=${ths[2].innerHTML} style=color:${cruzoCheck(elem.vegetariano,true)} >${cruzoCheck(elem.vegetariano,false)}</td>
+                          <td data-label=${ths[3].innerHTML} style=color:${cruzoCheck(elem.celiaco,true)} >${cruzoCheck(elem.celiaco,false)}</td>
+                          <td data-label=${ths[4].innerHTML} style=color:${cruzoCheck(elem.pago,true)} >${cruzoCheck(elem.pago,false)}</td>
                           <td data-label=${ths[5].innerHTML} >        
                             <button class="btnEditar" data-id=${elem.id}><i class="fa fa-pencil-alt"></i></button>
                             <button class="btnOK oculta" data-id=${elem.id}><i class="fa fa-check"></i></button>   
@@ -124,26 +105,37 @@ function plantilla(data) {
                           </td>`;
         tbody.appendChild(fila);
     });
-    document.querySelectorAll(".btnEditar").forEach((elem)=>{elem.addEventListener("click", btnEditar)});
-    document.querySelectorAll(".btnOK").forEach((elem)=>{elem.addEventListener("click", btnOk)});
-    document.querySelectorAll(".btnEliminar").forEach((elem)=>{elem.addEventListener("click", btnEliminar)});
+    document.querySelectorAll(".btnEditar").forEach((elem) => { elem.addEventListener("click", btnEditar) });
+    document.querySelectorAll(".btnOK").forEach((elem) => { elem.addEventListener("click", btnOk) });
+    document.querySelectorAll(".btnEliminar").forEach((elem) => { elem.addEventListener("click", btnEliminar) });
 }
 
-function btnEditar(e){
+function cruzoCheck(valor, color){
+    if(valor == "no" || valor == "No"){
+        if(color)
+            return "red"
+        return "&cross;";
+    }
+    if(color)
+        return "green";
+    return "&check;";
+}
+
+function btnEditar(e) {
     //let id = getID(e);
     let boton = e.target;
     let fila = boton.parentElement.parentElement;
-    if(e.target.innerHTML == ""){
+    if (e.target.innerHTML == "") {
         boton = boton.parentElement;
         fila = fila.parentElement;
     }
-    for(let celda of fila.children){
-        if(celda.getAttribute("data-label")!="Acciones"){
+    for (let celda of fila.children) {
+        if (celda.getAttribute("data-label") != "Acciones") {
             let input = document.createElement("input");
-            if(celda.getAttribute("data-label")!="Nombre"&&celda.getAttribute("data-label")!="Apellido"){
+            if (celda.getAttribute("data-label") != "Nombre" && celda.getAttribute("data-label") != "Apellido") {
                 input.setAttribute("type", "checkbox");
                 input.checked = true;
-                if(celda.innerHTML == "✗")
+                if (celda.innerHTML == "✗")
                     input.checked = false;
             }
             input.value = celda.innerHTML;
@@ -155,47 +147,47 @@ function btnEditar(e){
     boton.nextElementSibling.classList.toggle("oculta");
 }
 
-async function btnOk(e){
+async function btnOk(e) {
     let boton = e.target;
     let fila = boton.parentElement.parentElement;
-    if(e.target.innerHTML == ""){
+    if (e.target.innerHTML == "") {
         boton = boton.parentElement;
         fila = fila.parentElement;
     }
     let valores = {
-        nombre : fila.children[0].children[0].value,
-        apellido : fila.children[1].children[0].value,
-        celiaco : cambiar(fila.children[2].children[0].checked),
-        vegetariano : cambiar(fila.children[3].children[0].checked),
-        pago : cambiar(fila.children[0].children[0].checked)
+        nombre: fila.children[0].children[0].value,
+        apellido: fila.children[1].children[0].value,
+        vegetariano: cambiar(fila.children[2].children[0].checked),
+        celiaco: cambiar(fila.children[3].children[0].checked),
+        pago: cambiar(fila.children[4].children[0].checked)
     }
-    console.log(boton.dataset.id);
-    try{
-        await fetch(`${url}/${boton.dataset.id}`,{"method": "PUT",
-                                    "headers": { "Content-Type": "application/json" },
-                                    "body": JSON.stringify(valores)
+    try {
+        await fetch(`${url}/${boton.dataset.id}`, {
+            "method": "PUT",
+            "headers": { "Content-Type": "application/json" },
+            "body": JSON.stringify(valores)
         });
         boton.classList.toggle("oculta");
         boton.previousElementSibling.classList.toggle("oculta");
         imprimir();
     }
-    catch(error){console.log(error);}
+    catch (error) { console.log(error); }
 }
 
-function cambiar(valor){
-    if(valor)
+function cambiar(valor) {
+    if (valor)
         return "si"
-    return "no"
+    else return "no"
 }
 
-function getID(e){
-    if(e.target.dataset.id == null)
+function getID(e) {
+    if (e.target.dataset.id == null)
         return e.target.parentElement.dataset.id;
     else
         return e.target.dataset.id;
 }
 
-function btnEliminar(e){
+function btnEliminar(e) {
     let id = getID(e);
     Swal.fire({
         title: 'Estas seguro?',
@@ -223,46 +215,35 @@ function btnEliminar(e){
 }
 
 async function imprimir() {
-    try{
+    try {
         let respuesta = await fetch(`${url}?page=${obj.page}&limit=${obj.limit}`);
-        if(respuesta.ok){
+        if (respuesta.ok) {
             let json = await respuesta.json();
             plantilla(json);
         }
     }
-    catch(error){console.log(error);}
+    catch (error) { console.log(error); }
 }
-/*
-await fetch("https://62ccd195a080052930b0304f.mockapi.io/gente/gente/1",{"method": "PUT",
-                                                                         "headers": { "Content-Type": "application/json" },
-                                                                         "body": `{
-                                                                            "nombre": "Ines",
-                                                                            "apellido": "Bilbao",
-                                                                            "vegetariano": "no",
-                                                                            "celiaco": "si",
-                                                                            "pago": "-"
-                                                                         }`
-});
-*/
 
 async function enviarDato(obj) {
-    try{
-        await fetch(url,{"method": "POST",
-                         "headers": { "Content-Type": "application/json" },
-                         "body": JSON.stringify(obj)
+    try {
+        await fetch(url, {
+            "method": "POST",
+            "headers": { "Content-Type": "application/json" },
+            "body": JSON.stringify(obj)
         });
         imprimir();
     }
-    catch(error){console.log(error);}
+    catch (error) { console.log(error); }
 }
 
 async function eliminar(id) {
-    try{
-        await fetch(`${url}/${id}`, {"method": "DELETE"});
+    try {
+        await fetch(`${url}/${id}`, { "method": "DELETE" });
         imprimir();
         cantidadProductos();
     }
-    catch(error){console.log(error);}
+    catch (error) { console.log(error); }
 }
 
 
@@ -276,14 +257,21 @@ document.querySelector("#btnSig").addEventListener('click', () => {
     }
     cantidadProductos()
     imprimir()
-    document.querySelector("#paginado").innerHTML = `${(obj.page-1)*obj.limit}-${obj.page*obj.limit}`;
+    let fin = obj.page*obj.limit;
+    if(fin > obj.cantidad)
+        fin = obj.cantidad;
+    document.querySelector("#paginado").innerHTML = `${(obj.page - 1) * obj.limit}-${fin}`;
 })
 document.querySelector("#btnAnt").addEventListener('click', (e) => {
     if (obj.page > 1) {
         obj.page--
     }
     imprimir()
-    document.querySelector("#paginado").innerHTML = `${(obj.page-1)*obj.limit}-${obj.page*obj.limit}`;
+    let inicio = (obj.page-1)*obj.limit;
+    if(inicio == 0)
+        inicio++;
+    document.querySelector("#paginado").innerHTML = `${inicio}-${obj.page * obj.limit}`;
 })
+
 imprimir();
 cantidadProductos();
